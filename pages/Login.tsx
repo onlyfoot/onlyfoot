@@ -17,6 +17,12 @@ const Login: React.FC = () => {
     setError('');
     setIsSubmitting(true);
 
+    if (!email || !password) {
+      setError('Preencha todos os campos.');
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       const success = await login(email, password);
       if (success) {
@@ -25,6 +31,7 @@ const Login: React.FC = () => {
         setError('Email ou senha incorretos.');
       }
     } catch (err) {
+      console.error(err);
       setError('Ocorreu um erro ao tentar entrar.');
     } finally {
       setIsSubmitting(false);
