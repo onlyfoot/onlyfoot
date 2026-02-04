@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "lib": ["ESNext"],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -11,19 +11,11 @@
     "module": "CommonJS",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "outDir": "dist",
-    "jsx": "react-jsx"
+    "outDir": "dist"
   },
   "include": [
-    "src",
-    "components",
-    "pages",
-    "context",
-    "data.ts",
-    "types.ts",
-    "main.tsx",
-    "index.tsx",
-    "index.ts"
+    "context/index.ts",
+    "context/db.ts"
   ],
   "exclude": ["node_modules", "dist"]
 }
