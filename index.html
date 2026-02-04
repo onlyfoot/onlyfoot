@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Onlyfoot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: '#fff0ef',
+                100: '#ffe0de',
+                200: '#E8A6A1', // Nude Pink (Secondary Links)
+                300: '#ff9e95',
+                400: '#ff867a',
+                500: '#FF6F61', // Soft Coral (Action Buttons)
+                600: '#e65b50', // Hover
+                900: '#881337',
+              },
+              dark: {
+                900: '#0F0F0F', // Deep Black (Background)
+                800: '#1A1A1A', // Cards
+                700: '#2C2C2C', // Graphite Gray (Secondary Areas)
+                600: '#3D3D3D', // Borders
+              },
+              gold: {
+                500: '#C9A227', // Premium Gold
+              },
+              olive: {
+                500: '#7A8B74', // Olive Green
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      body { font-family: 'Inter', sans-serif; background-color: #0F0F0F; color: #F5F5F5; }
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      .no-scrollbar::-webkit-scrollbar {
+          display: none;
+      }
+      /* Hide scrollbar for IE, Edge and Firefox */
+      .no-scrollbar {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
+      }
+    </style>
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.2.0",
+        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+        "react-router-dom": "https://esm.sh/react-router-dom@6.22.3",
+        "lucide-react": "https://esm.sh/lucide-react@0.344.0",
+        "recharts": "https://esm.sh/recharts@2.12.2"
+      }
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
