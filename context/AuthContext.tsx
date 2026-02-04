@@ -16,7 +16,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check for active session
     const session = localStorage.getItem('privacy_session');
     if (session) {
       setUser(JSON.parse(session));
@@ -25,55 +24,57 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 800));
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
 
-    const usersStr = localStorage.getItem('privacy_users');
-    const users: User[] = usersStr ? JSON.parse(usersStr) : [];
+      if (!res.ok) return false;
 
-    const foundUser = users.find(u => u.email === email && u.password === password);
+      const data = await res.json();
+      const { token, user } = data;
 
-    if (foundUser) {
-      const { password, ...userWithoutPassword } = foundUser;
-      setUser(userWithoutPassword as User);
-      localStorage.setItem('privacy_session', JSON.stringify(userWithoutPassword));
+      localStorage.setItem('privacy_session', JSON.stringify(user));
+      localStorage.setItem('privacy_token', token);
+      setUser(user);
+
       return true;
+    } catch (err) {
+      console.error(err);
+      return false;
     }
-    return false;
   };
 
   const register = async (name: string, email: string, password: string): Promise<boolean> => {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 800));
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
+      });
 
-    const usersStr = localStorage.getItem('privacy_users');
-    const users: User[] = usersStr ? JSON.parse(usersStr) : [];
+      if (!res.ok) return false;
 
-    if (users.find(u => u.email === email)) {
-      return false; // User already exists
+      const data = await res.json();
+      const { token, user } = data;
+
+      localStorage.setItem('privacy_session', JSON.stringify(user));
+      localStorage.setItem('privacy_token', token);
+      setUser(user);
+
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
     }
-
-    const newUser: User = {
-      id: crypto.randomUUID(),
-      name,
-      email,
-      password
-    };
-
-    users.push(newUser);
-    localStorage.setItem('privacy_users', JSON.stringify(users));
-    
-    // Auto login after register
-    const { password: _, ...userWithoutPassword } = newUser;
-    setUser(userWithoutPassword as User);
-    localStorage.setItem('privacy_session', JSON.stringify(userWithoutPassword));
-    
-    return true;
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem('privacy_session');
+    localStorage.removeItem('privacy_token');
   };
 
   return (
