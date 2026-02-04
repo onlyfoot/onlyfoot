@@ -1,134 +1,97 @@
-import React, { useState, useEffect } from 'react';
-import { Layout } from '../components/Layout';
-import { CreatorCard } from '../components/CreatorCard';
-import { PostCard } from '../components/PostCard';
-import { StoryRail } from '../components/StoryRail';
-import { CREATORS } from '../constants';
-import { db } from '../services/db';
-import { Post, Creator, User } from '../types';
-import { Flame, Star, TrendingUp, Loader2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { LayoutGrid, Sparkles } from 'lucide-react';
+import { Product } from '../types';
+import ProductCard from '../components/ProductCard';
 
-export const Home: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'featured' | 'feed'>('featured');
-  const [feedItems, setFeedItems] = useState<{ post: Post; creator: Creator | User }[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+interface HomeProps {
+  products: Product[];
+  purchasedIds: string[];
+}
 
-  useEffect(() => {
-    if (activeTab === 'feed') {
-      loadFeed();
-    }
-  }, [activeTab]);
+const Home: React.FC<HomeProps> = ({ products, purchasedIds }) => {
+  const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
 
-  const loadFeed = async () => {
-    setIsLoading(true);
-    try {
-      const items = await db.getFeed();
-      setFeedItems(items);
-    } catch (error) {
-      console.error("Failed to load feed", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const filteredProducts = products.filter(product => {
+    if (selectedCategory === 'Todos') return true;
+    if (selectedCategory === 'VIP') return product.price > 30;
+    return product.category === selectedCategory;
+  });
 
   return (
-    <Layout>
-      {/* Tabs */}
-      <div className="sticky top-16 md:top-0 z-40 bg-dark-900/95 backdrop-blur border-b border-dark-700 px-4">
-        <div className="flex items-center gap-8 h-14">
-          <button 
-            onClick={() => setActiveTab('featured')}
-            className={`h-full relative font-medium text-sm transition-colors ${
-              activeTab === 'featured' ? 'text-white' : 'text-gray-500 hover:text-gray-300'
-            }`}
-          >
-            Destaques
-            {activeTab === 'featured' && (
-              <span className="absolute bottom-0 left-0 right-0 h-1 bg-brand-500 rounded-t-full"></span>
-            )}
-          </button>
-          <button 
-            onClick={() => setActiveTab('feed')}
-            className={`h-full relative font-medium text-sm transition-colors ${
-              activeTab === 'feed' ? 'text-white' : 'text-gray-500 hover:text-gray-300'
-            }`}
-          >
-            Atividade Recente
-            {activeTab === 'feed' && (
-              <span className="absolute bottom-0 left-0 right-0 h-1 bg-brand-500 rounded-t-full"></span>
-            )}
-          </button>
+    <div className="min-h-screen bg-darker pb-20">
+      
+      {/* Preview Carousel Section */}
+      <div className="pt-6 pb-2">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-sm font-bold text-zinc-400 mb-4 flex items-center gap-2 uppercase tracking-wider">
+            <Sparkles className="h-4 w-4 text-primary" />
+            Prévias do Clube
+          </h2>
+          
+          <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar snap-x snap-mandatory">
+            {products.map((product) => (
+              <div 
+                key={`preview-${product.id}`} 
+                className="flex-none w-64 sm:w-80 aspect-[16/10] relative rounded-xl overflow-hidden snap-center border border-zinc-800 group cursor-pointer hover:border-primary/50 transition-all select-none"
+                onContextMenu={(e) => e.preventDefault()} // Prevent right-click context menu
+              >
+                {/* Unblurred Image for Preview */}
+                <img 
+                  src={product.thumbnailUrl} 
+                  alt={product.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 pointer-events-none" // Disable pointer events on image to prevent dragging
+                  draggable={false}
+                />
+                
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent flex flex-col justify-end p-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-full p-[1px] bg-primary">
+                      <img src={product.creator.avatarUrl} className="w-full h-full rounded-full object-cover" draggable={false} />
+                    </div>
+                    <span className="text-xs text-zinc-200 font-medium shadow-black drop-shadow-md">{product.creator.name}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Stories */}
-      <div className="border-b border-dark-700 bg-dark-900/50">
-        <StoryRail />
-      </div>
+      {/* Main Grid */}
+      <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+            <LayoutGrid className="h-5 w-5 text-primary" />
+            Galeria Recente
+          </h2>
+          <span className="text-sm text-zinc-500">{filteredProducts.length} pacotes disponíveis</span>
+        </div>
 
-      <div className="p-4 md:p-6">
-        {activeTab === 'featured' ? (
-          <div className="space-y-8">
-            {/* Hero Section */}
-            <section>
-              <div className="flex items-center gap-2 mb-4">
-                <Flame className="w-5 h-5 text-orange-500 fill-orange-500" />
-                <h2 className="text-xl font-bold">Em Alta Agora</h2>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {CREATORS.slice(0, 2).map(creator => (
-                  <CreatorCard key={creator.id} creator={creator} />
-                ))}
-              </div>
-            </section>
-
-            {/* Trending Section */}
-            <section>
-              <div className="flex items-center gap-2 mb-4">
-                <TrendingUp className="w-5 h-5 text-blue-500" />
-                <h2 className="text-xl font-bold">Criadores Tendência</h2>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                {CREATORS.slice(2, 6).map(creator => (
-                  <CreatorCard key={creator.id} creator={creator} />
-                ))}
-              </div>
-            </section>
-
-            {/* New Section */}
-            <section>
-              <div className="flex items-center gap-2 mb-4">
-                <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
-                <h2 className="text-xl font-bold">Novos e Notáveis</h2>
-              </div>
-              <div className="overflow-x-auto pb-4 -mx-4 px-4 no-scrollbar flex gap-4">
-                {CREATORS.map(creator => (
-                  <div key={`new-${creator.id}`} className="min-w-[280px]">
-                    <CreatorCard creator={creator} />
-                  </div>
-                ))}
-              </div>
-            </section>
+        {filteredProducts.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+            {filteredProducts.map(product => (
+              <ProductCard 
+                key={product.id} 
+                product={product} 
+                isPurchased={purchasedIds.includes(product.id)} 
+              />
+            ))}
           </div>
         ) : (
-          <div className="max-w-xl mx-auto">
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 text-brand-500 animate-spin" />
-              </div>
-            ) : (
-              <>
-                {feedItems.map(({ post, creator }) => (
-                  <PostCard key={post.id} post={post} creator={creator as Creator} />
-                ))}
-                <div className="text-center py-8 text-gray-500 text-sm">
-                  Você chegou ao fim do feed.
-                </div>
-              </>
-            )}
+          <div className="text-center py-20 bg-zinc-900/30 rounded-xl border border-zinc-800 border-dashed">
+            <p className="text-zinc-500">Nenhum conteúdo encontrado.</p>
+            <button 
+              onClick={() => setSelectedCategory('Todos')}
+              className="mt-4 text-primary font-bold hover:underline"
+            >
+              Ver tudo
+            </button>
           </div>
         )}
       </div>
-    </Layout>
+    </div>
   );
 };
+
+export default Home;
