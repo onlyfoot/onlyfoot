@@ -14,13 +14,13 @@ const Navbar: React.FC<NavbarProps> = () => {
   return (
     <nav className="sticky top-0 z-50 w-full bg-darker border-b border-zinc-800">
       <div className="max-w-5xl mx-auto px-4">
-        <div className="flex items-center justify-between h-48"> {/* altura da navbar aumentada */}
-          {/* Logo bem grande */}
+        <div className="flex items-center justify-between h-48">
+          {/* Logo menor e alinhada à esquerda */}
           <Link to="/" className="flex items-center">
             <img 
               src={logo} 
               alt="Onlyfoot Logo"
-              className="h-40 w-auto" // logo 3x maior
+              className="h-20 w-auto" // metade do tamanho original
             />
           </Link>
 
