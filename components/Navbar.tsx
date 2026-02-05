@@ -26,11 +26,9 @@ const Navbar: React.FC<NavbarProps> = () => {
             />
           </Link>
 
-          {/* Links principais */}
+          {/* Link principal */}
           <div className="hidden md:flex items-center gap-8 text-white font-medium">
-            <Link to="/galeria" className="hover:text-primary">Galeria</Link>
-            <Link to="/videos" className="hover:text-primary">Vídeos</Link>
-            <Link to="/famosos" className="hover:text-primary">Famosos</Link>
+            <Link to="/" className="hover:text-primary">Início</Link>
           </div>
 
           {/* Perfil & Logout */}
