@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import ProductDetail from './pages/ProductDetail';
+import PackDetail from './pages/PackDetail'; // corrigido
 import Login from './pages/Login';
 import Register from './pages/Register';
-import { PACKS } from './data';
+import { PACKS } from './data'; // corrigido
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 const AuthenticatedApp: React.FC = () => {
   const { user, isLoading } = useAuth();
-  const [purchasedIds, setPurchasedIds] = useState<string[]>([]);
+  const [purchasedSlugs, setPurchasedSlugs] = useState<string[]>([]); // corrigido
   const [balance, setBalance] = useState(150.00);
 
   // Load user-specific data
@@ -20,9 +20,9 @@ const AuthenticatedApp: React.FC = () => {
       const savedBalance = localStorage.getItem(`privacy_balance_${user.id}`);
       
       if (savedPurchases) {
-        setPurchasedIds(JSON.parse(savedPurchases));
+        setPurchasedSlugs(JSON.parse(savedPurchases));
       } else {
-        setPurchasedIds([]); // Reset if no data
+        setPurchasedSlugs([]); // Reset if no data
       }
 
       if (savedBalance) {
@@ -36,17 +36,17 @@ const AuthenticatedApp: React.FC = () => {
   // Save user-specific data
   useEffect(() => {
     if (user) {
-      localStorage.setItem(`privacy_purchases_${user.id}`, JSON.stringify(purchasedIds));
+      localStorage.setItem(`privacy_purchases_${user.id}`, JSON.stringify(purchasedSlugs));
       localStorage.setItem(`privacy_balance_${user.id}`, balance.toString());
     }
-  }, [purchasedIds, balance, user]);
+  }, [purchasedSlugs, balance, user]);
 
-  const handlePurchase = (id: string, price: number): boolean => {
-    if (purchasedIds.includes(id)) return true;
+  const handlePurchase = (slug: string, price: number): boolean => {
+    if (purchasedSlugs.includes(slug)) return true;
     
     if (balance >= price) {
       setBalance(prev => prev - price);
-      setPurchasedIds(prev => [...prev, id]);
+      setPurchasedSlugs(prev => [...prev, slug]);
       return true;
     }
     return false;
@@ -73,14 +73,14 @@ const AuthenticatedApp: React.FC = () => {
       <Routes>
         <Route 
           path="/" 
-          element={<Home products={PRODUCTS} purchasedIds={purchasedIds} />} 
+          element={<Home packs={PACKS} purchasedSlugs={purchasedSlugs} />} // corrigido
         />
         <Route 
-          path="/product/:id" 
+          path="/pack/:slug" // corrigido
           element={
-            <ProductDetail 
-              products={PRODUCTS} 
-              purchasedIds={purchasedIds} 
+            <PackDetail 
+              packs={PACKS} 
+              purchasedSlugs={purchasedSlugs} 
               onPurchase={handlePurchase} 
             />
           } 
