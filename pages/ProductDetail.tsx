@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Lock, Unlock, CheckCircle, AlertCircle, ArrowLeft, Download, BadgeCheck, Shield, Star, Calendar } from 'lucide-react';
-import { Product } from '../types';
+import { Pack } from '../types';
 
-interface ProductDetailProps {
-  products: Product[];
-  purchasedIds: string[];
-  onPurchase: (id: string, price: number) => boolean;
+interface PackDetailProps {
+  packs: Pack[];
+  purchasedSlugs: string[];
+  onPurchase: (slug: string, price: number) => boolean;
 }
 
-const ProductDetail: React.FC<ProductDetailProps> = ({ products, purchasedIds, onPurchase }) => {
-  const { id } = useParams<{ id: string }>();
+const PackDetail: React.FC<PackDetailProps> = ({ packs, purchasedSlugs, onPurchase }) => {
+  const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [purchaseError, setPurchaseError] = useState<string | null>(null);
 
-  const product = products.find(p => p.id === id);
-  const isPurchased = id ? purchasedIds.includes(id) : false;
+  const pack = packs.find(p => p.slug === slug);
+  const isPurchased = slug ? purchasedSlugs.includes(slug) : false;
 
-  if (!product) {
+  if (!pack) {
     return (
       <div className="min-h-screen flex items-center justify-center text-white bg-darker">
         <div className="text-center">
@@ -34,7 +34,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ products, purchasedIds, o
     setPurchaseError(null);
 
     setTimeout(() => {
-      const success = onPurchase(product.id, product.price);
+      const success = onPurchase(pack.slug, pack.price);
       if (success) {
         setIsPurchasing(false);
       } else {
@@ -55,7 +55,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ products, purchasedIds, o
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
-          <span className="font-semibold text-white truncate">Detalhes do Pacote</span>
+          <span className="font-semibold text-white truncate">Detalhes do Pack</span>
         </div>
       </div>
 
@@ -66,8 +66,8 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ products, purchasedIds, o
           <div className="lg:col-span-2 space-y-6">
             <div className="relative aspect-video bg-black rounded-2xl overflow-hidden border border-zinc-800 shadow-2xl">
               <img 
-                src={product.thumbnailUrl} 
-                alt={product.title}
+                src={pack.thumbnailUrl} 
+                alt={pack.title}
                 className={`w-full h-full object-cover transition-all duration-1000 ${
                   isPurchased ? '' : 'blur-2xl opacity-40'
                 }`}
@@ -79,7 +79,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ products, purchasedIds, o
                     <Lock className="h-12 w-12 text-primary mx-auto mb-4" />
                     <h2 className="text-2xl font-bold text-white mb-2">Conteúdo Privado</h2>
                     <p className="text-zinc-400 mb-6">
-                      Este pacote contém {product.photos.length} arquivos de mídia exclusivos.
+                      Este pack contém {pack.photos.length} arquivos de mídia exclusivos.
                       Desbloqueie para visualizar e baixar.
                     </p>
                     <div className="flex items-center justify-center gap-2 text-xs text-zinc-500 uppercase tracking-widest font-semibold">
@@ -93,7 +93,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ products, purchasedIds, o
 
             {/* Thumbnails Grid (Blurred if locked) */}
             <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
-              {product.photos.map((photo, idx) => (
+              {pack.photos.map((photo, idx) => (
                 <div key={photo.id} className="relative aspect-square rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800">
                   <img 
                     src={photo.url} 
@@ -116,34 +116,34 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ products, purchasedIds, o
               {/* Creator Header */}
               <div className="flex items-center gap-3 mb-6 pb-6 border-b border-zinc-800">
                 <div className="w-12 h-12 rounded-full overflow-hidden bg-zinc-700 ring-2 ring-primary/20">
-                  <img src={product.creator.avatarUrl} alt={product.creator.name} className="w-full h-full object-cover" />
+                  <img src={pack.creator.avatarUrl} alt={pack.creator.name} className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <div className="flex items-center gap-1">
-                    <h3 className="font-bold text-white">{product.creator.name}</h3>
-                    {product.creator.verified && (
+                    <h3 className="font-bold text-white">{pack.creator.name}</h3>
+                    {pack.creator.verified && (
                       <BadgeCheck className="h-4 w-4 text-primary fill-primary text-white" />
                     )}
                   </div>
-                  <p className="text-xs text-zinc-500">{product.creator.username}</p>
+                  <p className="text-xs text-zinc-500">{pack.creator.username}</p>
                 </div>
               </div>
 
-              <h1 className="text-2xl font-bold text-white mb-2">{product.title}</h1>
+              <h1 className="text-2xl font-bold text-white mb-2">{pack.title}</h1>
               
               <div className="flex items-center gap-4 text-sm text-zinc-400 mb-6">
                 <span className="flex items-center gap-1">
                   <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
-                  {product.likes}
+                  {pack.likes}
                 </span>
                 <span className="flex items-center gap-1">
                   <Calendar className="h-4 w-4" />
-                  {product.postedAt}
+                  {pack.postedAt}
                 </span>
               </div>
 
               <p className="text-zinc-300 text-sm leading-relaxed mb-6">
-                {product.description}
+                {pack.description}
               </p>
 
               {purchaseError && (
@@ -167,11 +167,11 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ products, purchasedIds, o
               ) : (
                 <div className="space-y-4">
                   <div className="flex items-end justify-between mb-2">
-                    <span className="text-zinc-400 text-sm">Preço do pacote</span>
-                    <span className="text-3xl font-bold text-white">R$ {product.price.toFixed(2)}</span>
+                    <span className="text-zinc-400 text-sm">Preço do pack</span>
+                    <span className="text-3xl font-bold text-white">R$ {pack.price.toFixed(2)}</span>
                   </div>
                   
-                  <button 
+                                   <button 
                     onClick={handlePurchase}
                     disabled={isPurchasing}
                     className={`w-full py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2 shadow-lg ${
@@ -193,7 +193,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ products, purchasedIds, o
               <div className="mt-8 pt-6 border-t border-zinc-800">
                 <h4 className="text-xs font-bold text-zinc-500 uppercase mb-3">Tags</h4>
                 <div className="flex flex-wrap gap-2">
-                  {product.tags.map(tag => (
+                  {pack.tags.map(tag => (
                     <span key={tag} className="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-xs text-zinc-400">
                       #{tag}
                     </span>
@@ -212,7 +212,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ products, purchasedIds, o
               Galeria Desbloqueada
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {product.photos.map((photo) => (
+              {pack.photos.map((photo) => (
                 <div key={photo.id} className="group relative bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800">
                   <img 
                     src={photo.url} 
@@ -241,4 +241,4 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ products, purchasedIds, o
   );
 };
 
-export default ProductDetail;
+export default PackDetail;
