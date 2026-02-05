@@ -51,19 +51,19 @@ const PackCard: React.FC<PackCardProps> = ({ pack, isPurchased }) => {
           )}
         </div>
 
-        {/* Content Type Badge */}
-        <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-xs font-medium text-white flex items-center gap-1 border border-white/10">
-          {pack.photos && (
-            <>
+        {/* Content Type Badges (separados para fotos e vídeos) */}
+        <div className="absolute top-3 right-3 flex gap-2">
+          {pack.photos && pack.photos.length > 0 && (
+            <div className="bg-black/60 backdrop-blur-md px-2 py-1 rounded text-xs font-medium text-white flex items-center gap-1 border border-white/10">
               <ImageIcon className="h-3 w-3" />
-              <span>{pack.photos?.length}</span>
-            </>
+              <span>{pack.photos.length}</span>
+            </div>
           )}
-          {pack.videos && (
-            <>
+          {pack.videos && pack.videos.length > 0 && (
+            <div className="bg-black/60 backdrop-blur-md px-2 py-1 rounded text-xs font-medium text-white flex items-center gap-1 border border-white/10">
               <VideoIcon className="h-3 w-3" />
-              <span>{pack.videos?.length}</span>
-            </>
+              <span>{pack.videos.length}</span>
+            </div>
           )}
         </div>
 
