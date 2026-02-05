@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Lock, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import AuthLayout from '../components/AuthLayout';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -39,16 +40,16 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-darker flex items-center justify-center px-4">
-      <div className="max-w-md w-full space-y-8">
+    <AuthLayout>
+      <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <div className="mx-auto h-12 w-12 bg-primary rounded-full flex items-center justify-center mb-4">
+          <div className="mx-auto h-12 w-12 bg-brand-600 rounded-full flex items-center justify-center mb-4">
             <Lock className="h-6 w-6 text-white" />
           </div>
           <h2 className="text-3xl font-extrabold text-white tracking-tight">
             Bem-vindo de volta
           </h2>
-          <p className="mt-2 text-sm text-zinc-400">
+          <p className="mt-2 text-sm text-gray-400">
             Acesse sua área exclusiva
           </p>
         </div>
@@ -59,7 +60,7 @@ const Login: React.FC = () => {
               <input
                 type="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-zinc-700 placeholder-zinc-500 text-white bg-zinc-900 rounded-t-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-700 placeholder-gray-500 text-white bg-dark-800 rounded-t-md focus:outline-none focus:ring-brand-500 focus:border-brand-500 focus:z-10 sm:text-sm"
                 placeholder="Endereço de e-mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -67,9 +68,9 @@ const Login: React.FC = () => {
             </div>
             <div className="relative">
               <input
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-zinc-700 placeholder-zinc-500 text-white bg-zinc-900 rounded-b-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm pr-10"
+                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-700 placeholder-gray-500 text-white bg-dark-800 rounded-b-md focus:outline-none focus:ring-brand-500 focus:border-brand-500 focus:z-10 sm:text-sm pr-10"
                 placeholder="Senha"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -77,7 +78,7 @@ const Login: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center z-20 text-zinc-400 hover:text-white"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center z-20 text-gray-400 hover:text-white"
               >
                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
@@ -85,7 +86,7 @@ const Login: React.FC = () => {
           </div>
 
           {error && (
-            <div className="flex items-center gap-2 text-red-400 text-sm bg-red-500/10 p-3 rounded-md border border-red-500/20">
+            <div className="flex items-center gap-2 text-brand-500 text-sm bg-brand-900/30 p-3 rounded-md border border-brand-900/50">
               <AlertCircle className="h-4 w-4" />
               {error}
             </div>
@@ -95,9 +96,11 @@ const Login: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
-                isSubmitting ? 'bg-zinc-700 cursor-not-allowed' : 'bg-primary hover:bg-primary-hover'
-              } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors`}
+              className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-md text-white ${
+                isSubmitting
+                  ? 'bg-gray-700 cursor-not-allowed'
+                  : 'bg-brand-600 hover:bg-brand-500'
+              } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors`}
             >
               {isSubmitting ? 'Entrando...' : 'Entrar'}
               {!isSubmitting && <ArrowRight className="ml-2 h-4 w-4" />}
@@ -105,16 +108,19 @@ const Login: React.FC = () => {
           </div>
 
           <div className="text-center">
-            <p className="text-sm text-zinc-400">
+            <p className="text-sm text-gray-400">
               Não tem uma conta?{' '}
-              <Link to="/register" className="font-medium text-primary hover:text-primary-hover">
+              <Link
+                to="/register"
+                className="font-medium text-brand-500 hover:text-brand-400"
+              >
                 Cadastre-se gratuitamente
               </Link>
             </p>
           </div>
         </form>
       </div>
-    </div>
+    </AuthLayout>
   );
 };
 
