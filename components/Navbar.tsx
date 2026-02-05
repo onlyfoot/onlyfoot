@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import logo from './Onlyfoot.png'; // sua logo dentro de components
 
 interface NavbarProps {
-  balance: number; // ainda existe na interface, mas não será usado
+  balance: number; // não usado, mas mantido para compatibilidade
 }
 
 const Navbar: React.FC<NavbarProps> = () => {
@@ -14,13 +14,13 @@ const Navbar: React.FC<NavbarProps> = () => {
   return (
     <nav className="sticky top-0 z-50 w-full bg-darker border-b border-zinc-800">
       <div className="max-w-5xl mx-auto px-4">
-        <div className="flex items-center justify-between h-24">
+        <div className="flex items-center justify-between h-40"> {/* altura da navbar aumentada */}
           {/* Logo bem grande */}
           <Link to="/" className="flex items-center">
             <img 
               src={logo} 
               alt="Onlyfoot Logo"
-              className="h-20 w-auto" // aumenta bastante a altura da logo
+              className="h-36 w-auto" // logo 4x maior
             />
           </Link>
 
@@ -32,7 +32,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                 <p className="text-sm font-medium text-white">{user?.name}</p>
                 <p className="text-xs text-zinc-500">Membro</p>
               </div>
-              <div className="w-10 h-10 bg-zinc-700 rounded-full overflow-hidden border-2 border-transparent hover:border-primary transition-all">
+              <div className="w-12 h-12 bg-zinc-700 rounded-full overflow-hidden border-2 border-transparent hover:border-primary transition-all">
                 <img 
                   src={`https://ui-avatars.com/api/?name=${user?.name || 'User'}&background=random`} 
                   alt="Profile" 
@@ -44,10 +44,10 @@ const Navbar: React.FC<NavbarProps> = () => {
             {/* Logout */}
             <button 
               onClick={logout}
-              className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-full transition-colors"
+              className="p-3 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-full transition-colors"
               title="Sair"
             >
-              <LogOut className="h-6 w-6" />
+              <LogOut className="h-7 w-7" />
             </button>
           </div>
         </div>
