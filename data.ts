@@ -1,6 +1,5 @@
-import { Product } from './types';
-
-export const PRODUCTS: Product[] = [
+import { Pack } from './types';
+export const PACKS: Pack[] = [
   {
     id: '1',
     slug: 'maria',
