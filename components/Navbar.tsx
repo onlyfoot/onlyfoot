@@ -16,15 +16,12 @@ const Navbar: React.FC<NavbarProps> = ({ balance }) => {
       <div className="max-w-5xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center">
             <img 
               src={logo} 
               alt="Onlyfoot Logo"
-              className="h-8 w-auto" 
+              className="h-10 w-auto" // ajusta o tamanho da logo
             />
-            <span className="text-xl font-bold text-white tracking-tight">
-              Onlyfoot
-            </span>
           </Link>
 
           {/* Balance + Profile & Logout */}
