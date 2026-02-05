@@ -26,10 +26,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             />
           </Link>
 
-          {/* Link principal */}
-          <div className="hidden md:flex items-center gap-8 text-white font-medium">
-            <Link to="/" className="hover:text-primary">Início</Link>
-          </div>
+          {/* Links removidos */}
 
           {/* Perfil & Logout */}
           <div className="flex items-center gap-5">
