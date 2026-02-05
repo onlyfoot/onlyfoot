@@ -13,26 +13,35 @@ const Navbar: React.FC<NavbarProps> = () => {
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-darker border-b border-zinc-800">
-      <div className="max-w-5xl mx-auto px-4">
-        <div className="flex items-center justify-between h-48">
+      <div className="max-w-6xl mx-auto px-4">
+        {/* altura mais compacta */}
+        <div className="flex items-center justify-between h-20">
+          
           {/* Logo menor e alinhada à esquerda */}
           <Link to="/" className="flex items-center">
             <img 
               src={logo} 
               alt="Onlyfoot Logo"
-              className="h-20 w-auto" // metade do tamanho original
+              className="h-14 w-auto" // logo proporcional
             />
           </Link>
 
-          {/* Profile & Logout */}
-          <div className="flex items-center gap-6">
-            {/* Profile */}
+          {/* Links principais */}
+          <div className="hidden md:flex items-center gap-8 text-white font-medium">
+            <Link to="/galeria" className="hover:text-primary">Galeria</Link>
+            <Link to="/videos" className="hover:text-primary">Vídeos</Link>
+            <Link to="/famosos" className="hover:text-primary">Famosos</Link>
+          </div>
+
+          {/* Perfil & Logout */}
+          <div className="flex items-center gap-5">
+            {/* Perfil */}
             <div className="flex items-center gap-3">
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-medium text-white">{user?.name}</p>
                 <p className="text-xs text-zinc-500">Membro</p>
               </div>
-              <div className="w-14 h-14 bg-zinc-700 rounded-full overflow-hidden border-2 border-transparent hover:border-primary transition-all">
+              <div className="w-10 h-10 bg-zinc-700 rounded-full overflow-hidden border-2 border-transparent hover:border-primary transition-all">
                 <img 
                   src={`https://ui-avatars.com/api/?name=${user?.name || 'User'}&background=random`} 
                   alt="Profile" 
@@ -44,10 +53,10 @@ const Navbar: React.FC<NavbarProps> = () => {
             {/* Logout */}
             <button 
               onClick={logout}
-              className="p-4 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-full transition-colors"
+              className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-full transition-colors"
               title="Sair"
             >
-              <LogOut className="h-8 w-8" />
+              <LogOut className="h-6 w-6" />
             </button>
           </div>
         </div>
