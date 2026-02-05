@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import PackDetail from './pages/PackDetail';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import LandingPage from './pages/LandingPage'; // nova página inicial pública
+import LandingPage from './pages/LandingPage'; // página inicial pública
 import { PACKS } from './data';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
@@ -14,27 +14,18 @@ const AuthenticatedApp: React.FC = () => {
   const [purchasedSlugs, setPurchasedSlugs] = useState<string[]>([]);
   const [balance, setBalance] = useState(150.00);
 
-  // Load user-specific data
+  // Carregar dados específicos do usuário
   useEffect(() => {
     if (user) {
       const savedPurchases = localStorage.getItem(`privacy_purchases_${user.id}`);
       const savedBalance = localStorage.getItem(`privacy_balance_${user.id}`);
       
-      if (savedPurchases) {
-        setPurchasedSlugs(JSON.parse(savedPurchases));
-      } else {
-        setPurchasedSlugs([]);
-      }
-
-      if (savedBalance) {
-        setBalance(parseFloat(savedBalance));
-      } else {
-        setBalance(150.00);
-      }
+      setPurchasedSlugs(savedPurchases ? JSON.parse(savedPurchases) : []);
+      setBalance(savedBalance ? parseFloat(savedBalance) : 150.00);
     }
   }, [user]);
 
-  // Save user-specific data
+  // Salvar dados específicos do usuário
   useEffect(() => {
     if (user) {
       localStorage.setItem(`privacy_purchases_${user.id}`, JSON.stringify(purchasedSlugs));
@@ -54,7 +45,11 @@ const AuthenticatedApp: React.FC = () => {
   };
 
   if (isLoading) {
-    return <div className="min-h-screen bg-darker flex items-center justify-center text-white">Carregando...</div>;
+    return (
+      <div className="min-h-screen bg-darker flex items-center justify-center text-white">
+        Carregando...
+      </div>
+    );
   }
 
   // --- Parte pública (sem login) ---
