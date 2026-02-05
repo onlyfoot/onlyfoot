@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Lock, Unlock, Image as ImageIcon, Play, Star } from 'lucide-react';
-import { Product } from '../types';
+import { Pack } from '../types';
 
 interface ProductCardProps {
   product: Product;
