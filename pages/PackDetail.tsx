@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Lock, Unlock, CheckCircle, AlertCircle, ArrowLeft, Download, BadgeCheck, Shield, Star, Calendar } from 'lucide-react';
+import { Lock, Unlock, CheckCircle, AlertCircle, ArrowLeft, Download, BadgeCheck, Shield, Star, Calendar, Video as VideoIcon, Image as ImageIcon } from 'lucide-react';
 import { Pack } from '../types';
 
 interface PackDetailProps {
@@ -79,7 +79,7 @@ const PackDetail: React.FC<PackDetailProps> = ({ packs, purchasedSlugs, onPurcha
                     <Lock className="h-12 w-12 text-primary mx-auto mb-4" />
                     <h2 className="text-2xl font-bold text-white mb-2">Conteúdo Privado</h2>
                     <p className="text-zinc-400 mb-6">
-                      Este pack contém {pack.photos.length} arquivos de mídia exclusivos.
+                      Este pack contém {(pack.photos?.length ?? 0) + (pack.videos?.length ?? 0)} arquivos de mídia exclusivos.
                       Desbloqueie para visualizar e baixar.
                     </p>
                     <div className="flex items-center justify-center gap-2 text-xs text-zinc-500 uppercase tracking-widest font-semibold">
@@ -91,14 +91,28 @@ const PackDetail: React.FC<PackDetailProps> = ({ packs, purchasedSlugs, onPurcha
               )}
             </div>
 
-            {/* Thumbnails Grid (Blurred if locked) */}
+            {/* Thumbnails Grid */}
             <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
-              {pack.photos.map((photo, idx) => (
+              {pack.photos?.map((photo, idx) => (
                 <div key={photo.id} className="relative aspect-square rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800">
                   <img 
                     src={photo.url} 
                     alt={`Preview ${idx}`}
                     className={`w-full h-full object-cover ${isPurchased ? 'cursor-pointer hover:opacity-80' : 'blur-md opacity-30'}`}
+                  />
+                  {!isPurchased && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Lock className="h-4 w-4 text-zinc-600" />
+                    </div>
+                  )}
+                </div>
+              ))}
+              {pack.videos?.map((video, idx) => (
+                <div key={video.id} className="relative aspect-square rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800">
+                  <video 
+                    src={video.url} 
+                    controls={isPurchased}
+                    className={`w-full h-full object-cover ${isPurchased ? '' : 'blur-md opacity-30'}`}
                   />
                   {!isPurchased && (
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -146,7 +160,7 @@ const PackDetail: React.FC<PackDetailProps> = ({ packs, purchasedSlugs, onPurcha
                 {pack.description}
               </p>
 
-              {purchaseError && (
+                           {purchaseError && (
                 <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center gap-2 text-red-400 text-xs">
                   <AlertCircle className="h-4 w-4 flex-shrink-0" />
                   {purchaseError}
@@ -171,7 +185,7 @@ const PackDetail: React.FC<PackDetailProps> = ({ packs, purchasedSlugs, onPurcha
                     <span className="text-3xl font-bold text-white">R$ {pack.price.toFixed(2)}</span>
                   </div>
                   
-                                   <button 
+                  <button 
                     onClick={handlePurchase}
                     disabled={isPurchasing}
                     className={`w-full py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2 shadow-lg ${
@@ -212,7 +226,7 @@ const PackDetail: React.FC<PackDetailProps> = ({ packs, purchasedSlugs, onPurcha
               Galeria Desbloqueada
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {pack.photos.map((photo) => (
+              {pack.photos?.map((photo) => (
                 <div key={photo.id} className="group relative bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800">
                   <img 
                     src={photo.url} 
@@ -221,6 +235,27 @@ const PackDetail: React.FC<PackDetailProps> = ({ packs, purchasedSlugs, onPurcha
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6">
                     <p className="text-white font-medium text-lg mb-1">{photo.caption}</p>
+                    <div className="flex gap-3 mt-2">
+                      <button className="bg-white text-black text-sm font-bold py-2 px-4 rounded-lg flex items-center gap-2 hover:bg-zinc-200 transition-colors">
+                        <Download className="h-4 w-4" />
+                        Baixar
+                      </button>
+                      <button className="bg-black/50 backdrop-blur-md text-white text-sm font-bold py-2 px-4 rounded-lg border border-white/20 hover:bg-black/70 transition-colors">
+                        Visualizar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {pack.videos?.map((video) => (
+                <div key={video.id} className="group relative bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800">
+                  <video 
+                    src={video.url} 
+                    controls 
+                    className="w-full aspect-[4/3] object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6">
+                    <p className="text-white font-medium text-lg mb-1">{video.caption}</p>
                     <div className="flex gap-3 mt-2">
                       <button className="bg-white text-black text-sm font-bold py-2 px-4 rounded-lg flex items-center gap-2 hover:bg-zinc-200 transition-colors">
                         <Download className="h-4 w-4" />
