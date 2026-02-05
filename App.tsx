@@ -2,38 +2,38 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import PackDetail from './pages/PackDetail'; // corrigido
+import PackDetail from './pages/PackDetail';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import { PACKS } from './data'; // corrigido
+import { PACKS } from './data';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 const AuthenticatedApp: React.FC = () => {
   const { user, isLoading } = useAuth();
-  const [purchasedSlugs, setPurchasedSlugs] = useState<string[]>([]); // corrigido
-  const [balance, setBalance] = useState(150.00);
+  const [purchasedSlugs, setPurchasedSlugs] = useState<string[]>([]);
+  const [balance, setBalance] = useState(150.0);
 
-  // Load user-specific data
+  // Carregar dados específicos do usuário
   useEffect(() => {
     if (user) {
       const savedPurchases = localStorage.getItem(`privacy_purchases_${user.id}`);
       const savedBalance = localStorage.getItem(`privacy_balance_${user.id}`);
-      
+
       if (savedPurchases) {
         setPurchasedSlugs(JSON.parse(savedPurchases));
       } else {
-        setPurchasedSlugs([]); // Reset if no data
+        setPurchasedSlugs([]);
       }
 
       if (savedBalance) {
         setBalance(parseFloat(savedBalance));
       } else {
-        setBalance(150.00); // Reset to default if no data
+        setBalance(150.0);
       }
     }
   }, [user]);
 
-  // Save user-specific data
+  // Salvar dados específicos do usuário
   useEffect(() => {
     if (user) {
       localStorage.setItem(`privacy_purchases_${user.id}`, JSON.stringify(purchasedSlugs));
@@ -43,19 +43,24 @@ const AuthenticatedApp: React.FC = () => {
 
   const handlePurchase = (slug: string, price: number): boolean => {
     if (purchasedSlugs.includes(slug)) return true;
-    
+
     if (balance >= price) {
-      setBalance(prev => prev - price);
-      setPurchasedSlugs(prev => [...prev, slug]);
+      setBalance((prev) => prev - price);
+      setPurchasedSlugs((prev) => [...prev, slug]);
       return true;
     }
     return false;
   };
 
   if (isLoading) {
-    return <div className="min-h-screen bg-darker flex items-center justify-center text-white">Carregando...</div>;
+    return (
+      <div className="min-h-screen bg-darker flex items-center justify-center text-white">
+        Carregando...
+      </div>
+    );
   }
 
+  // Rotas públicas (login e cadastro)
   if (!user) {
     return (
       <Routes>
@@ -66,24 +71,25 @@ const AuthenticatedApp: React.FC = () => {
     );
   }
 
+  // Rotas autenticadas
   return (
-    <div className="min-h-screen bg-darker text-slate-200 font-sans selection:bg-primary/30 selection:text-primary">
+    <div className="min-h-screen bg-darker text-slate-200 font-sans selection:bg-brand-900/30 selection:text-brand-500">
       <Navbar balance={balance} />
-      
+
       <Routes>
-        <Route 
-          path="/" 
-          element={<Home packs={PACKS} purchasedSlugs={purchasedSlugs} />} // corrigido
+        <Route
+          path="/"
+          element={<Home packs={PACKS} purchasedSlugs={purchasedSlugs} />}
         />
-        <Route 
-          path="/pack/:slug" // corrigido
+        <Route
+          path="/pack/:slug"
           element={
-            <PackDetail 
-              packs={PACKS} 
-              purchasedSlugs={purchasedSlugs} 
-              onPurchase={handlePurchase} 
+            <PackDetail
+              packs={PACKS}
+              purchasedSlugs={purchasedSlugs}
+              onPurchase={handlePurchase}
             />
-          } 
+          }
         />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
