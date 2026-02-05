@@ -258,25 +258,25 @@ const PackDetail: React.FC<PackDetailProps> = ({ packs, purchasedSlugs, onPurcha
       </div>
     )}
 
-    {/* Vídeos */}
-    {pack.videos && pack.videos.length > 0 && (
-      <div>
-        <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-          <VideoIcon className="h-6 w-6 text-primary" /> Vídeos
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {pack.videos.map(video => (
-            <div key={video.id} className="group relative bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800">
-              <video src={video.url} controls className="w-full aspect-[4/3] object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6">
-                <p className="text-white font-medium text-lg mb-1">{video.caption}</p>
-                <div className="flex gap-3 mt-2">
-                  <button className="bg-white text-black text-sm font-bold py-2 px-4 rounded-lg flex items-center gap-2 hover:bg-zinc-200 transition-colors">
-                    <Download className="h-4 w-4" />
-                    Baixar
-                  </button>
-                  <button className="bg-black/50 backdrop-blur-md text-white text-sm font-bold py-2 px-4 rounded-lg border border-white/20 hover:bg-black/70 transition-colors">
-                    Visualizar
+                {/* Vídeos */}
+            {pack.videos && pack.videos.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                  <VideoIcon className="h-6 w-6 text-primary" /> Vídeos
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {pack.videos.map(video => (
+                    <div key={video.id} className="group relative bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800">
+                      <video src={video.url} controls className="w-full aspect-[4/3] object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6">
+                        <p className="text-white font-medium text-lg mb-1">{video.caption}</p>
+                        <div className="flex gap-3 mt-2">
+                          <button className="bg-white text-black text-sm font-bold py-2 px-4 rounded-lg flex items-center gap-2 hover:bg-zinc-200 transition-colors">
+                            <Download className="h-4 w-4" />
+                            Baixar
+                          </button>
+                          <button className="bg-black/50 backdrop-blur-md text-white text-sm font-bold py-2 px-4 rounded-lg border border-white/20 hover:bg-black/70 transition-colors">
+                            Visualizar
                           </button>
                         </div>
                       </div>
