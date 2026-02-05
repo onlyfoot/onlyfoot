@@ -1,4 +1,5 @@
 import { Pack } from './types';
+
 export const PACKS: Pack[] = [
   {
     id: '1',
@@ -12,7 +13,7 @@ export const PACKS: Pack[] = [
     title: 'Maria',
     description: 'Perfil exclusivo da Maria com fotos inéditas.',
     price: 29.90,
-    category: 'Pessoas',
+    category: 'Fotos',
     tags: ['Maria', 'Exclusivo'],
     thumbnailUrl: 'https://picsum.photos/seed/maria/600/400',
     likes: 1240,
@@ -34,7 +35,7 @@ export const PACKS: Pack[] = [
     title: 'João',
     description: 'Perfil exclusivo do João com fotos inéditas.',
     price: 45.00,
-    category: 'Pessoas',
+    category: 'Fotos',
     tags: ['João', 'Exclusivo'],
     thumbnailUrl: 'https://picsum.photos/seed/joao/600/400',
     likes: 3500,
@@ -55,7 +56,7 @@ export const PACKS: Pack[] = [
     title: 'Ana',
     description: 'Perfil exclusivo da Ana com fotos artísticos e pessoais.',
     price: 15.50,
-    category: 'Pessoas',
+    category: 'Fotos',
     tags: ['Ana', 'Arte'],
     thumbnailUrl: 'https://picsum.photos/seed/ana/600/400',
     likes: 890,
@@ -77,7 +78,7 @@ export const PACKS: Pack[] = [
     title: 'Carlos',
     description: 'Perfil exclusivo do Carlos com fotos inéditas.',
     price: 12.00,
-    category: 'Pessoas',
+    category: 'Fotos',
     tags: ['Carlos', 'Exclusivo'],
     thumbnailUrl: 'https://picsum.photos/seed/carlos/600/400',
     likes: 450,
@@ -98,7 +99,7 @@ export const PACKS: Pack[] = [
     title: 'Beatriz',
     description: 'Perfil exclusivo da Beatriz com fotos inéditas.',
     price: 35.00,
-    category: 'Pessoas',
+    category: 'Fotos',
     tags: ['Beatriz', 'Exclusivo'],
     thumbnailUrl: 'https://picsum.photos/seed/beatriz/600/400',
     likes: 2100,
@@ -119,13 +120,57 @@ export const PACKS: Pack[] = [
     title: 'Lucas',
     description: 'Perfil exclusivo do Lucas com fotos inéditas.',
     price: 50.00,
-    category: 'Pessoas',
+    category: 'Fotos',
     tags: ['Lucas', 'Exclusivo'],
     thumbnailUrl: 'https://picsum.photos/seed/lucas/600/400',
     likes: 5000,
     postedAt: '1sem atrás',
     photos: [
       { id: 'p6-1', url: 'https://picsum.photos/seed/lucas1/1200/800', caption: 'Foto 1 do Lucas' }
+    ]
+  },
+
+  // Packs de Vídeos
+  {
+    id: '7',
+    slug: 'maria-video',
+    creator: {
+      name: 'Maria',
+      username: '@maria',
+      avatarUrl: 'https://picsum.photos/seed/avatar1/200/200',
+      verified: true
+    },
+    title: 'Maria - Vídeo Exclusivo',
+    description: 'Vídeo exclusivo da Maria com bastidores inéditos.',
+    price: 39.90,
+    category: 'Vídeos',
+    tags: ['Maria', 'Exclusivo', 'Bastidores'],
+    thumbnailUrl: 'https://picsum.photos/seed/maria-video/600/400',
+    likes: 980,
+    postedAt: '3h atrás',
+    videos: [
+      { id: 'v1-1', url: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4', caption: 'Vídeo 1 da Maria' }
+    ]
+  },
+  {
+    id: '8',
+    slug: 'joao-video',
+    creator: {
+      name: 'João',
+      username: '@joao',
+      avatarUrl: 'https://picsum.photos/seed/avatar2/200/200',
+      verified: true
+    },
+    title: 'João - Vídeo Exclusivo',
+    description: 'Vídeo exclusivo do João com cenas inéditas.',
+    price: 55.00,
+    category: 'Vídeos',
+    tags: ['João', 'Exclusivo'],
+    thumbnailUrl: 'https://picsum.photos/seed/joao-video/600/400',
+    likes: 1500,
+    postedAt: '6h atrás',
+    videos: [
+      { id: 'v2-1', url: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_5mb.mp4', caption: 'Vídeo 1 do João' }
     ]
   }
 ];
