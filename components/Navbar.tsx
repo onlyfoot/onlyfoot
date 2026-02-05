@@ -5,10 +5,10 @@ import { useAuth } from '../context/AuthContext';
 import logo from './Onlyfoot.png'; // sua logo dentro de components
 
 interface NavbarProps {
-  balance: number;
+  balance: number; // ainda existe na interface, mas não será usado
 }
 
-const Navbar: React.FC<NavbarProps> = ({ balance }) => {
+const Navbar: React.FC<NavbarProps> = () => {
   const { logout, user } = useAuth();
 
   return (
@@ -24,13 +24,8 @@ const Navbar: React.FC<NavbarProps> = ({ balance }) => {
             />
           </Link>
 
-          {/* Balance + Profile & Logout */}
+          {/* Profile & Logout */}
           <div className="flex items-center gap-6">
-            {/* Balance */}
-            <div className="text-sm font-semibold text-white bg-primary/10 px-3 py-1 rounded-lg border border-primary/20">
-              Saldo: R$ {balance.toFixed(2)}
-            </div>
-
             {/* Profile */}
             <div className="flex items-center gap-3">
               <div className="text-right hidden sm:block">
